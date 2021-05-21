@@ -71,9 +71,26 @@ var PayolaSubscriptionCheckout = {
         });
     },
 
+    showSuccess: function(message, options) {
+        var error_div = $("#" + options.error_div_id);
+        error_div.html(message);
+        error_div.addClass('alert-success');
+        error_div.removeClass('alert-danger');
+        error_div.show();
+        $(".payola-subscription-checkout-button-spinner").hide();
+        $(".payola-subscription-checkout-button-text").show();
+        setTimeout(
+          function() {
+            $('#subscriptionModal').modal('hide')
+          }, 2000
+        );
+    },
+
     showError: function(error, options) {
         var error_div = $("#" + options.error_div_id);
         error_div.html(error);
+        error_div.addClass('alert-danger');
+        error_div.removeClass('alert-success');
         error_div.show();
         $(".payola-subscription-checkout-button").prop("disabled", false)
                                                  .trigger("error", error);
@@ -89,7 +106,11 @@ var PayolaSubscriptionCheckout = {
 
         var handler = function(data) {
             if (data.status === "active") {
-                window.location = options.base_path + "/confirm_subscription/" + guid;
+                PayolaSubscriptionCheckout.showSuccess("Thank you!", options);
+                $.ajax({
+                    type: "GET",
+                    url: options.base_path + "/confirm_subscription/" + guid,
+                });
             } else if (data.status === "errored") {
                 PayolaSubscriptionCheckout.showError(data.error, options);
             } else {

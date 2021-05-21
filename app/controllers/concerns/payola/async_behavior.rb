@@ -37,9 +37,7 @@ module Payola
         Payola.queue!(object_processor_class, object.guid)
       end
 
-      # TODO: Wow this is an ugly hack. Putting app-specific stuff in my engine...  I couldn't get class opening to work to extend it!
-      #render_payola_status(object)
-      redirect_to main_app.default_root_path, notice: "Thank you for your support!"
+      render_payola_status(object)
     end
   end
 end

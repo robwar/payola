@@ -126,4 +126,6 @@ var PayolaOnestepSubscriptionForm = {
     }
 };
 
+document.on('turbolinks:load', function () {
 PayolaOnestepSubscriptionForm.initialize();
+});
